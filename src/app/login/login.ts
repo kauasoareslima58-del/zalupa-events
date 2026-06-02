@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {}
+export class Login {
+  perfilAtivo: 'aluno' | 'outro' = 'aluno';
+
+  constructor() { }
+
+  mudarPerfil(perfil: 'aluno' | 'outro'): void {
+    this.perfilAtivo = perfil;
+  }
+}

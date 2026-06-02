@@ -1,1 +1,100 @@
 <p>login works!</p>
+
+<p>login works!</p>
+=======
+<div class="container">
+  <!-- Coluna Esquerda: Informações de Como Fazer -->
+  <aside class="sidebar left-sidebar">
+    <h2>Como Fazer o Login</h2>
+    <ul>
+      <li><strong>Passo 1:</strong> Selecione o seu perfil clicando em "Aluno" ou "Responsável / Professor".</li>
+      <li><strong>Passo 2:</strong> Insira seus dados de acesso:
+        <ul>
+          <li>Se for Aluno, digite o e-mail da escola (deve conter o dígito verificador).</li>
+          <li>Se for Pai ou Professor, utilize seu E-mail, CPF ou RG cadastrado.</li>
+        </ul>
+      </li>
+      <li><strong>Passo 3:</strong> Insira sua senha e a data atual do acesso.</li>
+      <li><strong>Passo 4:</strong> Clique em "Entrar no Sistema".</li>
+    </ul>
+  </aside>
+
+  <!-- Coluna Central: Formulário de Login -->
+  <main class="content">
+    <!-- Cabeçalho de Títulos Alinhados -->
+    <div class="header-portal">
+      <h1>Zalupa Events</h1>
+      <h2>Portal de Acesso</h2>
+    </div>
+
+    <!-- Botões de Alternância de Função -->
+    <div class="tabs-container">
+      <button 
+        type="button"
+        class="tab-btn"
+        [class.active]="perfilAtivo === 'aluno'"
+        (click)="mudarPerfil('aluno')">
+        ✔ Aluno
+      </button>
+    
+      <button 
+        type="button"
+        class="tab-btn"
+        [class.active]="perfilAtivo === 'outro'"
+        (click)="mudarPerfil('outro')">
+        ✔ Responsável / Professor
+      </button>
+    </div>
+
+    <form id="loginForm">
+      <!-- Campo de Identificação Dinâmico -->
+      <div class="form-group">
+        <label id="lblIdentificador" for="identificador">
+          {{ perfilAtivo === 'aluno' ? 'E-mail Escolar (com dígito) *' : 'E-mail, RG *' }}
+        </label>
+        <input 
+          type="text" 
+          id="identificador" 
+          name="identificador"
+          [placeholder]="perfilAtivo === 'aluno' ? 'Ex.:189409392' : 'Digite seu e-mail ou RG'"
+          required
+        >
+      </div>
+
+      
+      <!-- Campo de Senha -->
+      <div class="form-group">
+        <label for="senha">Senha *</label>
+        <input 
+          type="password" 
+          id="senha" 
+          name="senha"
+          placeholder="Digite sua senha"
+          required
+        >
+      </div>
+
+      <!-- Campo de Data -->
+      <div class="form-group">
+        <label for="dataAcesso">Data de aniversario *</label>
+        <input 
+          type="date" 
+          id="dataAcesso" 
+          name="dataAcesso"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-submit">Entrar no Sistema</button>
+    </form>
+  </main>
+
+  <!-- Coluna Direita: Informações de Ajuda Adicional -->
+  <aside class="sidebar right-sidebar">
+    <h2>Central de Ajuda</h2>
+    <p>Esqueceu seus dados de acesso?</p>
+    <p>Procure a coordenação ou entre em contato pelos canais:</p>
+    <p><strong>Telefone:</strong> (11) 4002-8922</p>
+    <p><strong>E-mail:</strong> suporteBicudo@escola.com</p>
+  </aside>
+</div>
