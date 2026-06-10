@@ -1,1 +1,66 @@
-<p>register works!</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Autenticação</title>
+    <link rel="stylesheet" href="register.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Esquerda -->
+        <aside class="sidebar left-sidebar">
+            <h2>Benefícios</h2>
+            <ul>
+                <li><strong>Acesso Exclusivo:</strong> Conteúdos e ferramentas premium.</li>
+                <li><strong>Segurança Total:</strong> Seus dados protegidos por criptografia.</li>
+                <li><strong>Suporte 24/7:</strong> Time pronto para te ajudar.</li>
+            </ul>
+        </aside>
+
+        <!-- Conteúdo Central (Formulário) -->
+        <main class="content">
+            <div class="header-portal">
+                <h1>PORTAL</h1>
+                <h2>Crie sua conta</h2>
+            </div>
+
+            <div class="tabs-container">
+                <button class="tab-btn" id="btn-login">Login</button>
+                <button class="tab-btn active" id="btn-register">Cadastro</button>
+            </div>
+
+            <form id="register-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" placeholder="Digite seu nome">
+                    <div class="error-msg" id="error-name"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                    <div class="error-msg" id="error-email"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Mínimo 6 caracteres">
+                    <div class="error-msg" id="error-password"></div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="btn-submit" disabled>Registrar</button>
+            </form>
+        </main>
+
+        <!-- Sidebar Direita -->
+        <aside class="sidebar right-sidebar">
+            <h2>Informações</h2>
+            <p><strong>Versão do Sistema:</strong> 2.4.0</p>
+            <p>Certifique-se de preencher todos os campos corretamente para liberar o botão de envio.</p>
+        </aside>
+    </div>
+    <script type="module" src="dist/app.js"></script>
+</body>
+</html>
