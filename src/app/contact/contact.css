@@ -1,0 +1,195 @@
+
+:host {
+  --blue-dark: #0A192F;
+  --blue-medium: #172A45;
+  --blue-light: #3066BE;
+  --blue-sky: #64DFDF;
+  --text-light: #F4F7F6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-light);
+  background-color: var(--blue-dark);
+  display: block;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: var(--blue-medium);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--blue-sky);
+}
+
+nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--blue-sky);
+}
+
+
+/* Fundo da página */
+.contact-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #06142e, #0b2447);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+  
+  /* Card principal */
+  .contact-card {
+    width: 100%;
+    max-width: 1200px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Cabeçalho */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .header h1 {
+    color: #0b2447;
+    margin-bottom: 15px;
+    font-size: 2.5rem;
+  }
+  
+  .header p {
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  /* Cards de contato */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .contact-item {
+    background: #f7f9fc;
+    border-top: 5px solid #0b2447;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+  }
+  
+  .contact-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(11, 36, 71, 0.15);
+  }
+  
+  .contact-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .contact-item h3 {
+    color: #0b2447;
+    margin-bottom: 10px;
+  }
+  
+  .contact-item p {
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  /* Formulário */
+  .form-section {
+    background: #f7f9fc;
+    padding: 30px;
+    border-radius: 15px;
+  }
+  
+  .form-section h2 {
+    text-align: center;
+    color: #0b2447;
+    margin-bottom: 25px;
+  }
+  
+  .input-group {
+    margin-bottom: 18px;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d5dbe7;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: 0.3s;
+  }
+  
+  input:focus,
+  textarea:focus {
+    border-color: #0b2447;
+    box-shadow: 0 0 0 3px rgba(11, 36, 71, 0.15);
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px;
+    background: #0b2447;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background: #133a72;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+  
+    .contact-card {
+      padding: 25px;
+    }
+  
+    .header h1 {
+      font-size: 2rem;
+    }
+  
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -1,0 +1,220 @@
+<header class="navbar">
+  <div class="logo">Zalupa Events</div>
+  <nav>
+    <a (click)="goToHome()">Início</a>
+    <a (click)="goToEvets()">Eventos</a>
+    <a (click)="goToAbout()">Sobre</a>
+    <a (click)="goToContact()">Contato</a>
+  </nav>
+  <button class="btn-primary" (click)="exploreEvents()">Explorar</button>
+</header>
+
+<div class="container">
+
+    <!-- CALENDÁRIO -->
+    <aside class="sidebar left-sidebar">
+      <h2>📅 Calendário de Eventos</h2>
+  
+      <p class="calendar-info">
+        Junho de 2026 - Eventos fixados na grade escolar.
+      </p>
+  
+      <div class="table-responsive">
+        <table class="calendar-table">
+          <thead>
+            <tr>
+              <th>Dom</th>
+              <th>Seg</th>
+              <th>Ter</th>
+              <th>Qua</th>
+              <th>Qui</th>
+              <th>Sex</th>
+              <th>Sáb</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr *ngFor="let week of [0,1,2,3,4]">
+  
+              <td *ngFor="let day of [1,2,3,4,5,6,7]">
+  
+                <span class="day-number">
+                  {{ (week * 7) + day }}
+                </span>
+  
+              </td>
+  
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+  
+    <!-- CONTEÚDO CENTRAL -->
+    <main class="content">
+  
+      <div class="header-portal">
+        <h1>Portal do Aluno e Professor</h1>
+  
+        <h2 class="subtitle">
+          Selecione seu perfil abaixo para interagir
+        </h2>
+      </div>
+  
+      <!-- ABAS -->
+      <div class="tabs-container">
+  
+        <button
+          class="tab-btn"
+          [class.active]="userRole === 'professor'"
+          (click)="changeRole('professor')">
+          Professor
+        </button>
+  
+        <button
+          class="tab-btn"
+          [class.active]="userRole === 'responsavel'"
+          (click)="changeRole('responsavel')">
+          Responsável
+        </button>
+  
+        <button
+          class="tab-btn"
+          [class.active]="userRole === 'aluno'"
+          (click)="changeRole('aluno')">
+          Aluno
+        </button>
+  
+      </div>
+  
+      <!-- EVENTOS -->
+      <div *ngIf="userRole === 'professor'" class="form-panel">
+  
+        <h2>Agendar Novo Evento</h2>
+  
+        <form
+          #eventForm="ngForm"
+          (ngSubmit)="addEvent(eventDate.value, eventTitle.value)">
+  
+          <div class="form-group">
+            <label>Data do Evento</label>
+  
+            <input
+              #eventDate
+              type="date"
+              required>
+          </div>
+  
+          <div class="form-group">
+            <label>Nome do Evento</label>
+  
+            <input
+              #eventTitle
+              type="text"
+              placeholder="Ex: Festa Junina ou Prova Bimestral"
+              required>
+          </div>
+  
+          <button type="submit" class="btn-submit">
+            Publicar no Calendário
+          </button>
+  
+        </form>
+  
+      </div>
+  
+      <!-- AVISOS -->
+      <div
+        *ngIf="userRole === 'responsavel'"
+        class="form-panel">
+  
+        <h2>Publicar no Mural</h2>
+  
+        <form
+          #noticeForm="ngForm"
+          (ngSubmit)="addNotice(noticeText.value)">
+  
+          <div class="form-group">
+  
+            <label>Texto do Aviso</label>
+  
+            <input
+              #noticeText
+              type="text"
+              placeholder="Escreva o comunicado aqui..."
+              required>
+  
+          </div>
+  
+          <button type="submit" class="btn-submit">
+            Fixar Aviso no Mural
+          </button>
+  
+        </form>
+  
+      </div>
+  
+      <!-- ALUNO -->
+      <div
+        *ngIf="userRole === 'aluno'"
+        class="form-panel visitor-panel">
+  
+        <p>
+          🔒 <strong>Modo de Leitura:</strong>
+          Alunos possuem acesso apenas para visualizar a agenda de eventos
+          diários e o mural de recados.
+        </p>
+  
+      </div>
+  
+    </main>
+  
+    <!-- MURAL -->
+    <aside class="sidebar right-sidebar">
+  
+      <h2>📌 Mural de Comunicados</h2>
+  
+      <div class="notice-container-list">
+  
+        <div
+          *ngFor="let notice of wallNotices.slice().reverse()"
+          class="notice-card"
+          [class.professor-border]="notice.role === 'professor'">
+  
+          <div class="notice-meta">
+  
+            <span
+              [class.role-badge-prof]="notice.role === 'professor'"
+              [class.role-badge-resp]="notice.role === 'responsavel'">
+  
+              {{ notice.role === 'professor'
+                ? '🧑‍🏫 Professor'
+                : '👪 Responsável' }}
+  
+            </span>
+  
+            <span class="notice-date">
+              {{ notice.timestamp }}
+            </span>
+  
+          </div>
+  
+          <p>{{ notice.text }}</p>
+  
+          <button
+            *ngIf="userRole === 'professor' ||
+                   (userRole === 'responsavel' && notice.role === 'responsavel')"
+            class="btn-del-inline"
+            (click)="removeNotice(notice.id)">
+  
+            Excluir
+  
+          </button>
+  
+        </div>
+  
+      </div>
+  
+    </aside>
+  
+  </div>

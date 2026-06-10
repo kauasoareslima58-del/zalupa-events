@@ -1,0 +1,153 @@
+
+:host {
+  --blue-dark: #0A192F;
+  --blue-medium: #172A45;
+  --blue-light: #3066BE;
+  --blue-sky: #64DFDF;
+  --text-light: #F4F7F6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-light);
+  background-color: var(--blue-dark);
+  display: block;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: var(--blue-medium);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--blue-sky);
+}
+
+nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--blue-sky);
+}
+
+/* Fundo da página */
+.about-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #06142e, #0b2447);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+  
+  /* Card principal */
+  .about-card {
+    width: 100%;
+    max-width: 1100px;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Cabeçalho */
+  .logo-area {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .logo-area h1 {
+    color: #0b2447;
+    font-size: 2.5rem;
+    margin: 0;
+  }
+  
+  .subtitle {
+    text-align: center;
+    color: #555;
+    font-size: 1.1rem;
+    margin-bottom: 35px;
+  }
+  
+  /* Seção principal */
+  .info-section {
+    background: #f4f7fb;
+    border-left: 6px solid #0b2447;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .info-section h2 {
+    color: #0b2447;
+    margin-bottom: 10px;
+  }
+  
+  .info-section p {
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  /* Cards */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .info-box {
+    background: #f8f9fc;
+    padding: 25px;
+    border-radius: 15px;
+    border-top: 5px solid #0b2447;
+    transition: 0.3s;
+  }
+  
+  .info-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(11, 36, 71, 0.15);
+  }
+  
+  .info-box h3 {
+    color: #0b2447;
+    margin-bottom: 10px;
+  }
+  
+  .info-box p {
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  /* Rodapé */
+  .footer {
+    margin-top: 40px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    color: #666;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .about-card {
+      padding: 25px;
+    }
+  
+    .logo-area h1 {
+      font-size: 2rem;
+    }
+  }
