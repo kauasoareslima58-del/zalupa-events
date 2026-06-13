@@ -28,10 +28,6 @@ export class Home {
     this.route.navigate(['/contact'])
   }
 
-  // goToAbout(){
-  //   this.route.navigate(['/habout'])
-  // }
-  
   events = [
     { title: 'Conferência Tech 2026', date: '15 de Julho, 2026', description: 'O maior evento de tecnologia e inovação.' },
     { title: 'Festival de Inverno', date: '22 de Agosto, 2026', description: 'Música ao vivo, gastronomia e cultura.' },
