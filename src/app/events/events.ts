@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -23,9 +23,13 @@ interface WallNotice {
   templateUrl: './events.html',
   styleUrl: './events.css',
 })
-export class Events {
+export class Events implements OnInit {
 
-  userRole: 'professor' | 'responsavel' | 'aluno' = 'professor';
+  // Visualização inicial da tela (muda conforme o clique nas abas)
+  userRole: 'professor' | 'responsavel' | 'aluno' = 'aluno';
+
+  // Guarda quem está logado de verdade (Inicia vazio para não bloquear ninguém por engano)
+  roleReal: string = '';
 
   calendarEvents: CalendarEvent[] = JSON.parse(
     localStorage.getItem('cal_events') || '[]'
@@ -37,6 +41,16 @@ export class Events {
 
   constructor(private route: Router) {
     this.renderApplication();
+  }
+
+  ngOnInit(): void {
+    // Resgata o perfil que veio lá da tela de login
+    const usuarioSalvo = localStorage.getItem('roleLogado');
+    
+    if (usuarioSalvo) {
+      this.roleReal = usuarioSalvo;
+      this.userRole = usuarioSalvo as 'professor' | 'responsavel' | 'aluno'; 
+    }
   }
 
   goToHome(){
@@ -54,17 +68,26 @@ export class Events {
   goToContact(){
     this.route.navigate(['/contact'])
   }
+  
   exploreEvents() {
     document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' });
   }
 
   changeRole(role: 'professor' | 'responsavel' | 'aluno'): void {
+    // 🔒 A TRAVA SÓ ENTRA EM AÇÃO SE O CARA FOR ALUNO DE VERDADE
+    if (this.roleReal === 'aluno') {
+      alert('Acesso negado: Alunos não podem alternar para a gestão de professores ou responsáveis!');
+      return;
+    }
+
+    // Se NÃO for aluno (ou seja, for professor, responsável ou admin), ele troca de aba de boa
     this.userRole = role;
     this.renderApplication();
   }
 
   addEvent(date: string, title: string): void {
-    if (this.userRole !== 'professor') return;
+    // Bloqueia apenas se o cara for aluno de verdade tentando burlar
+    if (this.roleReal === 'aluno') return;
 
     const newEvent: CalendarEvent = {
       id: crypto.randomUUID(),
@@ -77,7 +100,8 @@ export class Events {
   }
 
   addNotice(text: string): void {
-    if (this.userRole === 'aluno') return;
+    // Bloqueia apenas se o cara for aluno de verdade tentando burlar
+    if (this.roleReal === 'aluno') return;
 
     const now = new Date();
 

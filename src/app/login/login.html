@@ -57,6 +57,18 @@
         >
       </div>
 
+      <!-- 🔑 NOVA SETA: Só aparece se selecionar a aba Responsável / Professor -->
+      <div class="form-group" *ngIf="perfilAtivo === 'outro'">
+        <label for="subPerfil">Selecione seu Cargo *</label>
+        <select 
+          id="subPerfil" 
+          name="subPerfil" 
+          [(ngModel)]="subPerfilSelecionado"
+          required>
+          <option value="professor">🧑‍🏫 Professor</option>
+          <option value="responsavel">👪 Responsável</option>
+        </select>
+      </div>
       
       <!-- Campo de Senha -->
       <div class="form-group">
