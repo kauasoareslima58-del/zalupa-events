@@ -3,6 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import ptBrLocale from '@fullcalendar/core/locales/pt-br';
+
 interface CalendarEvent {
   id: string;
   date: string;
@@ -14,80 +20,125 @@ interface WallNotice {
   text: string;
   role: 'professor' | 'responsavel';
   timestamp: string;
-}
 
-@Component({
+}@Component({
   selector: 'app-events',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FullCalendarModule
+  ],
   templateUrl: './events.html',
-  styleUrl: './events.css',
+  styleUrls: ['./events.css']
 })
+
 export class Events implements OnInit {
 
   // Visualização inicial da tela (muda conforme o clique nas abas)
   userRole: 'professor' | 'responsavel' | 'aluno' = 'aluno';
 
-  // Guarda quem está logado de verdade (Inicia vazio para não bloquear ninguém por engano)
+  // Guarda quem está logado de verdade
   roleReal: string = '';
 
+  // Eventos salvos
   calendarEvents: CalendarEvent[] = JSON.parse(
     localStorage.getItem('cal_events') || '[]'
   );
 
+  // Avisos do mural
   wallNotices: WallNotice[] = JSON.parse(
     localStorage.getItem('wall_notices') || '[]'
   );
 
+  // Configuração do FullCalendar
+calendarOptions: CalendarOptions = {
+  initialView: 'dayGridMonth',
+  plugins: [
+    dayGridPlugin,
+    interactionPlugin
+  ],
+  locale: ptBrLocale,
+  editable: true,
+  selectable: true,
+  height: 'auto',
+  events: []
+};
   constructor(private route: Router) {
     this.renderApplication();
   }
 
   ngOnInit(): void {
-    // Resgata o perfil que veio lá da tela de login
+
+    // Resgata o perfil que veio da tela de login
     const usuarioSalvo = localStorage.getItem('roleLogado');
-    
+
     if (usuarioSalvo) {
       this.roleReal = usuarioSalvo;
-      this.userRole = usuarioSalvo as 'professor' | 'responsavel' | 'aluno'; 
+      this.userRole = usuarioSalvo as 'professor' | 'responsavel' | 'aluno';
     }
+
+    this.loadEventsIntoCalendar();
   }
 
-  goToHome(){
-    this.route.navigate(['/home'])
+  // ==========================
+  // NAVEGAÇÃO
+  // ==========================
+
+  goToHome() {
+    this.route.navigate(['/home']);
   }
 
-  goToEvets(){
-    this.route.navigate(['/events'])
+  goToEvets() {
+    this.route.navigate(['/events']);
   }
 
-  goToAbout(){
-    this.route.navigate(['/about'])
+  goToAbout() {
+    this.route.navigate(['/about']);
   }
 
-  goToContact(){
-    this.route.navigate(['/contact'])
+  goToContact() {
+    this.route.navigate(['/contact']);
   }
-  
+
   exploreEvents() {
-    document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('events')?.scrollIntoView({
+      behavior: 'smooth'
+    });
   }
+
+  // ==========================
+  // CONTROLE DE PERFIL
+  // ==========================
 
   changeRole(role: 'professor' | 'responsavel' | 'aluno'): void {
-    // 🔒 A TRAVA SÓ ENTRA EM AÇÃO SE O CARA FOR ALUNO DE VERDADE
+
     if (this.roleReal === 'aluno') {
-      alert('Acesso negado: Alunos não podem alternar para a gestão de professores ou responsáveis!');
+      alert(
+        'Acesso negado: Alunos não podem alternar para a gestão de professores ou responsáveis!'
+      );
       return;
     }
 
-    // Se NÃO for aluno (ou seja, for professor, responsável ou admin), ele troca de aba de boa
     this.userRole = role;
     this.renderApplication();
   }
 
+  // ==========================
+  // CALENDÁRIO
+  // ==========================
+
   addEvent(date: string, title: string): void {
-    // Bloqueia apenas se o cara for aluno de verdade tentando burlar
-    if (this.roleReal === 'aluno') return;
+
+    if (this.roleReal === 'aluno') {
+      alert('Alunos não podem criar eventos.');
+      return;
+    }
+
+    if (!date || !title.trim()) {
+      alert('Preencha todos os campos.');
+      return;
+    }
 
     const newEvent: CalendarEvent = {
       id: crypto.randomUUID(),
@@ -96,12 +147,56 @@ export class Events implements OnInit {
     };
 
     this.calendarEvents.push(newEvent);
+
+    console.log('Evento adicionado:', newEvent);
+
     this.saveState();
+
+    this.loadEventsIntoCalendar();
+
+    alert('Evento publicado com sucesso!');
   }
 
+  removeEvent(id: string): void {
+
+    const confirmar = confirm(
+      'Deseja realmente excluir este evento?'
+    );
+  
+    if (!confirmar) {
+      return;
+    }
+  
+    this.calendarEvents = this.calendarEvents.filter(
+      event => event.id !== id
+    );
+  
+    this.saveState();
+  
+    this.loadEventsIntoCalendar();
+  }
+
+  loadEventsIntoCalendar(): void {
+
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: this.calendarEvents.map(event => ({
+        id: event.id,
+        title: event.title,
+        start: event.date
+      }))
+    };
+  }
+
+  // ==========================
+  // MURAL DE AVISOS
+  // ==========================
+
   addNotice(text: string): void {
-    // Bloqueia apenas se o cara for aluno de verdade tentando burlar
+
     if (this.roleReal === 'aluno') return;
+
+    if (!text.trim()) return;
 
     const now = new Date();
 
@@ -119,18 +214,12 @@ export class Events implements OnInit {
     };
 
     this.wallNotices.push(newNotice);
-    this.saveState();
-  }
-
-  removeEvent(id: string): void {
-    this.calendarEvents = this.calendarEvents.filter(
-      event => event.id !== id
-    );
 
     this.saveState();
   }
 
   removeNotice(id: string): void {
+
     this.wallNotices = this.wallNotices.filter(
       notice => notice.id !== id
     );
@@ -138,16 +227,26 @@ export class Events implements OnInit {
     this.saveState();
   }
 
+  // ==========================
+  // RENDERIZAÇÃO
+  // ==========================
+
   renderApplication(): void {
     this.renderCalendarGrid();
     this.renderWallNotices();
   }
 
   renderCalendarGrid(): void {
+
     const totalDays = 30;
 
     for (let day = 1; day <= totalDays; day++) {
-      const formattedDay = day < 10 ? `0${day}` : `${day}`;
+
+      const formattedDay =
+        day < 10
+          ? `0${day}`
+          : `${day}`;
+
       const searchKey = `2026-06-${formattedDay}`;
 
       const events = this.calendarEvents.filter(
@@ -162,7 +261,12 @@ export class Events implements OnInit {
     console.log('Avisos:', this.wallNotices);
   }
 
+  // ==========================
+  // LOCAL STORAGE
+  // ==========================
+
   saveState(): void {
+
     localStorage.setItem(
       'cal_events',
       JSON.stringify(this.calendarEvents)
@@ -172,6 +276,8 @@ export class Events implements OnInit {
       'wall_notices',
       JSON.stringify(this.wallNotices)
     );
+
+    this.loadEventsIntoCalendar();
 
     this.renderApplication();
   }
